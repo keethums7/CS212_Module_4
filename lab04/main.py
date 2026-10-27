@@ -80,7 +80,7 @@ if __name__ == "__main__":
     clf_cf_matrix = metrics.confusion_matrix(test_labels, word_prediction)
 
     print(f"Single word features, Classification Report:\n{clf_report_tfidfv}")
-    print(f"Default TfidfVectorizer, Confusion Matrix:\n{clf_cf_matrix}\n")
+    print(f"Single word features, Confusion Matrix:\n{clf_cf_matrix}\n")
 
     # Step 2. Experiment 1: Which features work best?
      
@@ -89,8 +89,10 @@ if __name__ == "__main__":
     word_cvs = cross_val_score(word_pipe, train_texts, train_labels, cv=5)
 
     
-    print(f"Single word features, cross_val_score (5) mean accuracy: {100 * word_cvs.mean():.2f}%") 
-    print(f"Single word features, cross_val_score (5) std deviation: {100 * word_cvs.std():.2f}%\n")
+    print(f"Single word features, cross_val_score (5) mean accuracy:"\
+        f"{100 * word_cvs.mean():.2f}%") 
+    print(f"Single word features, cross_val_score (5) std deviation:"\
+        f"{100 * word_cvs.std():.2f}%\n")
 
     # now do the same thing for word and word pairs (ngram_range=(1, 2))
     # start by building the pipeline
@@ -101,8 +103,10 @@ if __name__ == "__main__":
     word_pair_pipe = word_pair_pipe.fit(train_texts, train_labels)
     word_pair_cvs = cross_val_score(word_pair_pipe, train_texts, train_labels, cv=5)
 
-    print(f"Word pair features, cross_val_score (5) mean accuracy: {100 * word_pair_cvs.mean():.2f}%") 
-    print(f"Word pair features, cross_val_score (5) std deviation: {100 * word_pair_cvs.std():.2f}%\n")
+    print(f"Word pair features, cross_val_score (5) mean accuracy:"\
+        f"{100 * word_pair_cvs.mean():.2f}%")
+    print(f"Word pair features, cross_val_score (5) std deviation:"\
+        f"{100 * word_pair_cvs.std():.2f}%\n")
 
     # same things for characters (analyzer="char", ngram_range=(2, 4))
     char_pipe = Pipeline([
@@ -112,8 +116,10 @@ if __name__ == "__main__":
     char_pipe = char_pipe.fit(train_texts, train_labels)
     char_cvs = cross_val_score(char_pipe, train_texts, train_labels, cv=5)
 
-    print(f"Character features, cross_val_score (5) mean accuracy: {100 * char_cvs.mean():.2f}%") 
-    print(f"Character features, cross_val_score (5) std deviation: {100 * char_cvs.std():.2f}%\n")
+    print(f"Character features, cross_val_score (5) mean accuracy:"\
+          f"{100 * char_cvs.mean():.2f}%") 
+    print(f"Character features, cross_val_score (5) std deviation:"\
+          f"{100 * char_cvs.std():.2f}%\n")
 
     # and for words, this time with common english words removed (stop_words="english")
     stop_word_pipe = Pipeline([
@@ -123,43 +129,43 @@ if __name__ == "__main__":
     stop_word_pipe = stop_word_pipe.fit(train_texts, train_labels)
     stop_word_cvs = cross_val_score(stop_word_pipe, train_texts, train_labels, cv=5)
 
-    print(f"Single word features w/English stop words removed, cross_val_score (5) mean: \
-          {100 * stop_word_cvs.mean():.2f}%\n") 
-    print(f"Single word features w/English stop words removed, cross_val_score (5) std \
-          deviation: {100 * stop_word_cvs.std():.2f}%\n")
+    print(f"Single word features w/English stop words removed, cross_val_score (5) mean "\
+        f"accuracy {100 * stop_word_cvs.mean():.2f}%") 
+    print(f"Single word features w/English stop words removed, cross_val_score (5) std "\
+        f"deviation: {100 * stop_word_cvs.std():.2f}%\n")
 
     """
-    Output:
-    Single word features, cross_val_score (5) mean accuracy: 89.86%
-    Single word features, cross_val_score (5) std deviation: 1.21%
+        Output:
+        Single word features, cross_val_score (5) mean accuracy: 89.86%
+        Single word features, cross_val_score (5) std deviation: 1.21%
 
-    Word pair features, cross_val_score (5) mean accuracy: 89.94%
-    Word pair features, cross_val_score (5) std deviation: 1.01%
+        Word pair features, cross_val_score (5) mean accuracy: 89.94%
+        Word pair features, cross_val_score (5) std deviation: 1.01%
 
-    Character features, cross_val_score (5) mean accuracy: 92.39%
-    Character features, cross_val_score (5) std deviation: 1.12%
+        Character features, cross_val_score (5) mean accuracy: 92.39%
+        Character features, cross_val_score (5) std deviation: 1.12%
 
-    Single word features w/English stop words removed, cross_val_score (5) mean accuracy: 86.21%
-    Single word features w/English stop words removed, cross_val_score (5) std deviation: 1.99%
-    --------------------
-    Questions:
-    1. Which features were the best?
-    - The feature set yielding the highest accuracy was the single characters (92.39%).
-    - The feature set yielding the lowest accuracy was the single words with
-        stop words removed (86.21%)
-    - The difference between the two was 6.18% (92.39-86.21), more than the
-        std deviation of either (1.12% | 1.99%)
-    - While there wasn't a substantial difference between using single characters
-        and words or word pairs as features, there is enough of a difference between
-        single word features with english stop words removed and the other three
-        methods to say that those three *appear* to be slightly better, arguably in
-        their own tier, when compared to single words w/stop words removed.
+        Single word features w/English stop words removed, cross_val_score (5) mean accuracy: 86.21%
+        Single word features w/English stop words removed, cross_val_score (5) std deviation: 1.99%
+        ---------------
+        Questions:
+        1. Which features were the best?
+        - The feature set yielding the highest accuracy was the single characters (92.39%).
+        - The feature set yielding the lowest accuracy was the single words with
+            stop words removed (86.21%)
+        - The difference between the two was 6.18% (92.39-86.21), more than the
+            std deviation of either (1.12% | 1.99%)
+        - While there wasn't a substantial difference between using single characters
+            and words or word pairs as features, there is enough of a difference between
+            single word features with english stop words removed and the other three
+            methods to say that those three *appear* to be slightly better, arguably in
+            their own tier, when compared to single words w/stop words removed.
 
-    2. What happened when you removed the stop words? Does that surprise you?
-    - It seems like removing stop words actually reduced the accuracy, which is surprising.
-    - These are answers to questions, though, which means they're likely written in layman's
-        terms and contain less dense, expert level vocabluary and a closer style to spoken
-        English, which means removing the common stop words may yield less accurate results.
+        2. What happened when you removed the stop words? Does that surprise you?
+        - It seems like removing stop words actually reduced the accuracy, which is surprising.
+        - These are answers to questions, though, which means they're likely written in layman's
+            terms and contain less dense, expert level vocabluary and a closer style to spoken
+            English, which means removing the common stop words may yield less accurate results.
     """
 
     # Step 3. Look inside the classifier
@@ -178,52 +184,51 @@ if __name__ == "__main__":
         print(f"- {i}")
 
     """
-    Output:
-    Top 15 human-like words from the word-based pipeline:
+        Output:
+        Top 15 human-like words from the word-based pipeline:
 
-    - an
-    - displaystyle
-    - theory
-    - from
-    - by
-    - with
-    - only
-    - 11
-    - 10
-    - sometimes
-    - methods
-    - engineering
-    - general
-    - usually
-    - 12
+        - an
+        - displaystyle
+        - theory
+        - from
+        - by
+        - with
+        - only
+        - 11
+        - 10
+        - sometimes
+        - methods
+        - engineering
+        - general
+        - usually
+        - 12
 
-    Top 15 ChatGPT-like words from the word-based pipeline:
+        Top 15 ChatGPT-like words from the word-based pipeline:
 
-    - tasks
-    - important
-    - is
-    - involves
-    - his
-    - variety
-    - they
-    - the
-    - can
-    - including
-    - used
-    - that
-    - it
-    - to
-    - and
-    --------------------    
-    Questions:
-    1. Which words are about style?
-    - The only word out of both lists that really seems to be about style looks like
-        "displaystyle" on the human list.
-    2. Which are artifacts of how the data was collected?
-    - "displaystyle", "engineering", and especially "10", "11", and "12", all sound
-        like possible artifacts since it's unlikely you'd find those words in just
-        any general knowledge responses to questions whose answers are sourced
-        from wiki pages
+        - tasks
+        - important
+        - is
+        - involves
+        - his
+        - variety
+        - they
+        - the
+        - can
+        - including
+        - used
+        - that
+        - it
+        - to
+        - and
+        ---------------
+        Questions:
+        1. Which words are about style?
+        - The only word out of both lists that really seems to be about style looks like
+            "displaystyle" on the human list.
+        2. Which are artifacts of how the data was collected?
+        - "displaystyle" and especially "10", "11", and "12", all sound like possible
+            artifacts of the human side writing style since they are copied
+            and pasted in from wikipedia articles and may include HTML/other artifacts
     """
 
     # Step 4. Tune the hyperparameters
@@ -231,14 +236,96 @@ if __name__ == "__main__":
     
     # GridSearchCV using the existing pipeline
     parameters = {
-        "C": [100, 250, 500, 750, 1000],
-        "vect__ngram_range": [(1, 1)], # default for tfidf
-        "tfidf__use_idf": [True, True, True, True, True],
+        "tfidf__ngram_range": [(1, 1), (1, 2)], # word, word-pair
+        "tfidf__use_idf": (True, False), # with and without inverse document frequency
+        "tfidf__min_df": [1, 2], # if an ngram appears only once or only twice ignore it
+        "clf__C": (100, 250, 500, 750, 1000),
     }
-    word_gs = GridSearchCV(word_pipe, parameters, cv=5, n_jobs=-1)
+    word_gs = GridSearchCV(estimator=word_pipe, param_grid=parameters, cv=5, n_jobs=-1)
+    word_gs = word_gs.fit(train_texts, train_labels)
 
-    # perform the grid search
-    word_gs.fit(train_texts, train_labels)
+    # test its prediction on the test texts
+    word_gs_predict = word_gs.predict(test_texts)
+    word_gs_accuracy = np.mean(word_gs_predict == test_labels)
 
-    # report the best parameters
-    print("Best parameters found:", word_gs.best_params_)
+    # report the best parameters and cvs
+    print("\nBest parameters found using GridSearchCV on training data: ")
+    for i in word_gs.best_params_:
+        print(f"- {i}: {word_gs.best_params_[i]}")
+
+    print(f"\nCross-validation score: {100 * word_gs.best_score_:.2f}%")
+
+    # report the accuracy using the best parameters
+    print(f"\nAccuracy on test data while using the best parameters: {100 * word_gs_accuracy:.2f}%")
+
+    """
+        Output:
+        Best parameters found using GridSearchCV on training data: 
+        - clf__C: 500
+        - tfidf__min_df: 2
+        - tfidf__ngram_range: (1, 2)
+        - tfidf__use_idf: True
+
+        Cross-validation score: 94.61%
+
+        Accuracy on test data while using the best parameters: 94.79%
+    """
+
+    # Step 5. Experiment 2: A new topic
+    
+    # load questions from open_qa.jsonl and load into new test data
+    new_questions, new_human_answers, new_chatgpt_answers = load_hc3("data/open_qa.jsonl")
+    new_questions_numbers = list(range(len(new_questions)))
+    new_test_texts, new_test_labels = make_samples(new_human_answers, new_chatgpt_answers, new_questions_numbers)
+
+    # test the trained model above on the new test data,
+    # grab the accuracy, classification report, and confusion matrix
+    new_word_gs_predict = word_gs.predict(new_test_texts)
+    new_word_gs_accuracy = np.mean(new_word_gs_predict == new_test_labels)
+    new_word_gs_cr = metrics.classification_report(new_test_labels, new_word_gs_predict)
+    new_word_gs_cm = metrics.confusion_matrix(new_test_labels, new_word_gs_predict)
+
+    # print out all of the above
+    print(
+      f"Loaded data from 'data/open_qa.jsonl'..."
+      f"testing model trained using best params:\n"\
+      f"Accuracy: {100 * new_word_gs_accuracy:.2f}%\n"\
+      f"Classification report:\n{new_word_gs_cr}\n"\
+      f"Confusion Matrix:\n{new_word_gs_cm}"
+      )
+  
+    """
+        Output:
+        Loaded data from 'data/open_qa.jsonl'... testing model trained using best params:
+        Accuracy: 78.48%
+        Classification report:
+                      precision    recall  f1-score   support
+
+                   0       0.71      0.97      0.82      1187
+                   1       0.95      0.60      0.74      1187
+
+            accuracy                           0.78      2374
+           macro avg       0.83      0.78      0.78      2374
+        weighted avg       0.83      0.78      0.78      2374
+
+        Confusion Matrix:
+        [[1150   37]
+         [ 474  713]]
+        ---------------
+        Questions:
+        1. How much did the accuracy drop compared with the wiki_csai test set?
+        - Accuracy dropped from 94.79% to 78.48%, a difference of 16.31%
+        2. Which of the two classes did the model get wrong more often?
+            Compare the lengths of the human and ChatGPT answers in the two
+            files (the median number of words is a good measure) and explain
+            what you see
+        - It looks like it predicted human text more accurately if I'm reading it
+        correctly (0=human, 1=chatgpt)
+        - The ChatGPT answers are consistently much longer than the human answers,
+            which makes some sense in terms of the effort needed to write longer,
+            more in-depth and verbose answers.
+    """
+
+    # Step 6. Error analysis
+    
+    # print five (5) answers from the wiki_csai test set that the tuned model got wrong
