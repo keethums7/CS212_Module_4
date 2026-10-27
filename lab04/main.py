@@ -3,6 +3,9 @@ Keith Wangler
 CS212 - Fall 2026 - Brian Bird
 Lab 4
 10/25/2026
+
+No AI/code completion was used whatsoever while updating this code from the
+starter code to what you see currently.
 """
 
 import json
