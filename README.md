@@ -1,6 +1,8 @@
 # Get started
-`cd lab04 && uv sync` move into correct directory and add necessary packages  
+ move into correct directory and add necessary packages  
+```cd lab04 && uv sync```  
 then  
-`uv run fetch_data.py ` download necessary data files  
-finally  
-`uv run main.py`
+download necessary data files  
+```uv run fetch_data.py```  
+finally run the main script  
+```uv run main.py```
