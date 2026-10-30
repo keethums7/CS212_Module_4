@@ -332,3 +332,105 @@ if __name__ == "__main__":
     # Step 6. Error analysis
     
     # print five (5) answers from the wiki_csai test set that the tuned model got wrong
+
+    # loop through the prediction object until 
+    # we know we have 5 labels that were incorrect
+    # wrong_count = 0
+       # i = 0
+    # while wrong_count < 5:
+    #     for
+
+    # iterate through the test labels, check if the index
+    # doesn't match with the predicted value 
+    # (0 for human, 1 for ChatGPT)
+    # until 5 wrong answers are accumulated
+    wrong_answers = []
+    i = 0 # starting index for the loop
+
+    while len(wrong_answers) < 5:
+        if word_prediction[i] != test_labels[i]:
+            answer = {
+                'text': test_texts[i],
+                'predicted_label': word_prediction[i],
+                'true_label': test_labels[i]
+            }
+            wrong_answers.append(answer)
+        i += 1 # increment the index and check again
+
+    print("5 wrong answers:\n", wrong_answers)
+
+    """
+    Output:
+    [
+    {'text': 'Robert Ettinger was a science fiction author and cryonics advocate who is best known for his books 
+    "The Prospect of Immortality"and "Man into Superman." He was born in 1918 and grew up in New Jersey. 
+    He served in World War II and later earned a bachelor\'s degree in physics from the University of Michigan.
+    \n\n\n\nEttinger became interested in the idea of cryonics, or the freezing of human bodies 
+    in the hope of reviving them in the future when medical technology has advanced, 
+    after reading about it in a science fiction magazine in the 1950s. 
+    He wrote "The Prospect of Immortality" in 1964, which became a seminaltext in the cryonics movement. 
+    In the book, he argued that cryonics offered the possibility of extending human life indefinitely 
+    and that it was a viable option for people who wanted to preserve their bodies in the hope of 
+    being revived in the future.\n\n\n\nEttinger founded theCryonics Institute in 1976, 
+    a non-profit organization that offers cryopreservation services to its members. 
+    He died in 2011 at the age of 92 and was cryopreserved at the institute. 
+    His work and ideas about cryonics have been both praised and criticized by scientists and philosophers.', 
+    'predicted_label': np.int64(0), 'true_label': 1},
+    {'text': "Animage sensor is a device that converts an optical image into an electronic signal. 
+    It is used in digital cameras, scanners, and other image-capturing devices to capture and record images.
+    \n\n\n\nAn image sensor consists of a matrix of photodiodes, which are light-sensitive elements 
+    that convert light into an electrical current. When light enters the camera and hits the image sensor, 
+    it is absorbed by the photodiodes, which generate an electrical current proportional to the intensity of the light. 
+    The image sensor converts this electrical current into digital data, which is then processed 
+    by the camera's image processing unit to produce a digital image.
+    \n\n\n\nThere are two main types of image sensors: CCD (charge-coupled device) 
+    and CMOS (complementary metal-oxide-semiconductor). CCD sensors are generally more expensive to manufacture, 
+    but they produce higher quality images with less noise. CMOS sensors are 
+    less expensive to manufacture and consume less power, but they may produce images with more noise.
+    \n\n\n\nIn summary, an image sensor is a crucial component of any image-capturing device, 
+    as it converts the light that enters the device into a digital representation ofthe scene that can be stored and manipulated.", 
+    'predicted_label': np.int64(0), 'true_label': 1},
+    {'text': 'In mathematics, a polynomial isan expression consisting of indeterminates (also called variables) 
+    and coefficients, that involves only the operations of addition, subtraction, multiplication, 
+    and positive-integer powers of variables. An example of a polynomial of a single indeterminate x is x2 − 4x + 7. 
+    An example with three indeterminates is x3 + 2xyz2 − yz + 1.
+    \nPolynomials appear in many areas of mathematics and science. For example, 
+    they are used to form polynomial equations, which encode a wide range of problems, 
+    from elementary word problems to complicated scientific problems; they are used to define polynomial functions, 
+    which appear in settingsranging from basic chemistry and physics to economics and social science; 
+    they are used in calculus and numerical analysis to approximate other functions. In advanced mathematics, 
+    polynomials are used to construct polynomial rings and algebraic varieties, which are central concepts 
+    in algebra and algebraic geometry.', 
+    'predicted_label': np.int64(1), 'true_label': 0},
+    {'text': 'In mathematics, a polynomial is an expression consisting of variables (also called indeterminates) 
+    and coefficients, that involves only the operations of addition, subtraction, and multiplication, 
+    and sometimes division (though this is not always allowed). For example, the polynomial 3x^2 + 2x - 5 
+    is a polynomial in the variable x. The highest power of the variable in a polynomial is called 
+    the degree of the polynomial. In this case, the degree of the polynomial is 2 because the highest power of x is 2.
+    \n\n\n\nA multivariate polynomial is a polynomial with more than one variable. 
+    For example,the expression 2x^2 + y^3 - 3z + 4 is a multivariate polynomial in the variables x, y, and z. 
+    The degree of a multivariate polynomial is the highest power of the variables in the polynomial. 
+    In this case, the degree of the polynomial is 3 because the highest power of any of the variables is 3 (in the term y^3).
+    \n\n\n\nMultivariate polynomials can be useful for modeling relationships between multiple variables. 
+    For example, a polynomial with two variables, such as 3x^2 + 2xy + y^2, 
+    could be used to model the relationship between two variables, such as the price and demand for a product.', 
+    'predicted_label': np.int64(0), 'true_label': 1},
+    {'text': 'Social intelligence is the capacity to know oneself and to know others. 
+    Social intelligence is learned and develops from experience with people and learning from success and failures in social settings.
+    Social intelligence is the ability to understand your own and others actions. 
+    It is also known as "tact" or "common sense", or "street smarts".
+    [citation needed] It is an important interpersonal skill that will help individuals succeed in all aspects of their lives.', 
+    'predicted_label': np.int64(1), 'true_label': 0}]
+
+    Questions:
+    1. What do the mistakes have in common?
+        - For the answers that had predicted values of 0 (human) and true values of chatGPT (1),
+        it's mostly clear that there are triplicate new line characters throughout those answers.
+        - For the others (predicted 1 (chatGPT) true value 0 (human)), I don't know if I really
+        see a discernable pattern or common thread.
+    2. Are any of them hard even for you to judge?
+        - Yes, as stated in question 1 - the answers that were predicted to be chatGPT but were
+        actually human...I'm not exactly sure what it was seeing, perhaps it's the mathematical
+        terms or the "[citation needed]" that would complicate the usual pattern that the 
+        prediction relies on for its basis/logic.
+    """
